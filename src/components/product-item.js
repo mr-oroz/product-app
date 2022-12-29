@@ -1,15 +1,15 @@
 import React from 'react';
 
 const ProductItem = (props) => {
-  const { title, price, discount, buttonTitle, count, plus } = props;
+  const { title, price, discount, buttonTitle, count, plus, min } = props;
   return (
     <div className='card'>
       {discount !== null ? <span>скидка {discount}% </span> : null}
       <h5>{title}</h5>
-      <span>{price} сом</span>
+      {count ? <span>{price * count}</span> : price}
       {
         count && <div>
-          <button>-</button>
+          <button onClick={min}>-</button>
           <span>{count}</span>
           <button onClick={plus}>+</button> 
         </div>

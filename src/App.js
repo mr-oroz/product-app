@@ -14,7 +14,7 @@ const App = () => {
   const [data, setData] = useState(productData);
   const [title, setTitle] = useState('');
   const [cart, setCart] = useState(JSON.parse(localStorage.getItem("cart-product")) || []);
-
+  const [open, setOpen] = useState(false)
   useEffect(() => {
     localStorage.setItem('cart-product', JSON.stringify(cart))
   }, [cart])
@@ -38,12 +38,12 @@ const App = () => {
   }
 
   const addToCart = (id) => {
-    const check = cart.every(elem => elem.id !== id) 
-    if(!check) {
+    const check = cart.every(elem => elem.id !== id)
+    if (!check) {
       alert('продук добавлен!')
     } else {
       const product = data.find(elem => elem.id === id)
-      const newItem = {...product, count: 1}
+      const newItem = { ...product, count: 1 }
       const newArr = [...cart, newItem]
       setCart(newArr)
     }
@@ -55,10 +55,29 @@ const App = () => {
   }
 
   const plus = (id) => {
-    const newArr = cart.map(elem => elem.id === id ? {...elem, count: elem.count + 1} : elem)
+    const newArr = cart.map(elem => elem.id === id ? {
+      ...elem,
+      count: elem.count + 1,
+    } : elem)
     setCart(newArr)
   }
 
+  const min = (id) => {
+    const newArr = cart.map(elem => elem.id === id ? {
+      ...elem,
+      count: elem.count === 1 ? 1 : elem.count - 1,
+    } : elem)
+    setCart(newArr)
+  }
+  const cartTotal = cart.reduce((acc, item) => acc + item.count * item.price, 0 )
+  const closeModal = () => {
+    localStorage.removeItem('cart-product')
+    setOpen(false)
+    setCart([])
+     setTimeout(() => {
+      alert('успешно прошло')
+    }, 2000)
+  }
   return (
     <div className='app'>
       <Header
@@ -84,7 +103,12 @@ const App = () => {
               <Route
                 path='/cart'
                 element={<Cart
+                  closeModal={closeModal}
+                  open={open}
+                  setOpen={setOpen}
+                  cartTotal={cartTotal}
                   plus={plus}
+                  min={min}
                   deleteProduct={deleteProduct}
                   cart={cart} />} />
             </Routes>
