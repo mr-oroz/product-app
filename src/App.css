@@ -105,18 +105,38 @@ h1 {
   height: 100;
 }
 
-.modal {
-  width: 400px;
-  padding: 15px;
+.modal, .check {
   border: 2px solid black;
+  padding: 20px;
+  border-radius: 10px;
+  width: 350px; 
   display: flex;
   flex-direction: column;
+  align-items: center;
+  margin: 50px 0;
+  justify-content: center;
+}
+.modal form input {
+  margin: 10px 0;
+}
+.modal form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.modal-product{
+.modal .form-control {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+}
+.modal .form-control .form-radio {
+  margin: 0 10px;
+}
+
+.modal .form-control .form-radio input {
+  margin-left: 10px;
+}
+
+.modal button {
+  margin: 10px 0;
 }
 

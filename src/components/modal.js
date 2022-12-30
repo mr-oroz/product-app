@@ -1,31 +1,83 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-const Modal = ({ cartTotal, cart, closeModal, setOpen }) => {
-  console.log('modal >>', cart)
+const Modal = (props) => {
+  const { cart, totalProduct, setOpen, byProduct, loading } = props;
+
+  const [username, setUsername] = useState('')
+  const [phone, setPhone] = useState('')
+  const [address, setAddress] = useState('')
+  const [radio, setRadio] = useState('radio')
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    setAddress('')
+    setPhone('')
+    setUsername('')
+    const object = {
+      username,
+      phone,
+      address,
+      radio
+    }
+    byProduct()
+    console.log(object, cart.map(elem => elem))
+  }
   return (
     <div className='modal'>
-      <h3>ваш товар</h3>
-      {
-        cart.map((elem, index) => {
-          return <div
-            style={{
-              borderBottom: '2px solid black',
-              marginBottom: "15px"
-            }}
-            key={elem.id}
-            className='modal-product'>
-            <div>
-              <span>{index + 1}:</span>
-              <span>названия товара: {elem.title}</span>
-              <br />
-              <span>{elem.count} шт</span>
-            </div>
+      <h1>оформление</h1>
+      <form onSubmit={handleSubmit} action="">
+        <input
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          type="text"
+          placeholder='ФИО' />
+        <input
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
+          type="text"
+          placeholder='ваш адрес' />
+        <input
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          type="text"
+          placeholder='телефон' />
+        <div className='form-control'>
+          <div className='form-radio'>
+            <label htmlFor="">с давтавкой</label>
+            <input 
+              value={'с давтавкой'}
+              onChange={(e) => setRadio(e.target.value)} 
+              name='radio' 
+              type="radio" />
           </div>
-        })
-      }
-      <h3>общая сумма: {cartTotal} сом</h3>
-      <button onClick={closeModal}>купить</button>
-      <button onClick={()=> setOpen(false)}>отмена</button>
+          <div className='form-radio'>
+            <label htmlFor="">самовызов</label>
+            <input 
+              value={'самовызов'}
+              onChange={(e) => setRadio(e.target.value)} 
+              name='radio' 
+              type="radio" />
+          </div>
+        </div>
+        <div className='product-list'>
+          {
+            cart.map((elem, index) => {
+              return <div key={elem.id} className='list'>
+                <span>{index + 1}: </span>
+                <span>названия товара: {elem.title}</span>
+                <br />
+                <span>{elem.count} шт</span>
+              </div>
+            })
+          }
+        </div>
+        <h3>общая сумма: {totalProduct} сом</h3>
+        <button type='submit'>{loading ? 'загрузка...'  : 'оформить'}</button>
+      </form>
+      <button
+        onClick={() => setOpen(false)}>
+        отмена
+      </button>
     </div>
   );
 };

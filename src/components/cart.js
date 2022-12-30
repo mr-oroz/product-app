@@ -1,19 +1,48 @@
 import React from 'react';
+import Check from './check';
 import Modal from './modal';
 import ProductItem from './product-item';
 
-const Cart = ({ cart, deleteProduct, plus, min, cartTotal, open, setOpen, closeModal }) => {
+const Cart = (props) => {
+  const { cart,
+    deleteProduct,
+    plus,
+    min,
+    totalProduct,
+    open,
+    setOpen,
+    byProduct,
+    checkOpen,
+    closeCheckOpen,
+    loading } = props;
   return (
     <>
-      <h1>общая сумма {cartTotal} сом</h1>
-      <button
-        onClick={() => setOpen(true)}
-        style={{ margin: '10px 0' }}>купить</button>
-      {open ? <Modal
-        setOpen={setOpen}
-        cart={cart}
-        cartTotal={cartTotal}
-        closeModal={closeModal} /> : null}
+      <h1>общая сумма: {totalProduct} сом</h1>
+
+      {
+        totalProduct !== 0 ?
+          <button
+            onClick={() => setOpen(true)}
+            style={{ marginBottom: '20px' }}>оформить заказ</button>
+          : null
+      }
+
+      {
+        open ?
+          <Modal
+            loading={loading}
+            byProduct={byProduct}
+            setOpen={setOpen}
+            cart={cart}
+            totalProduct={totalProduct} /> : null
+      }
+      {checkOpen ?
+        <Check
+          closeCheckOpen={closeCheckOpen}
+          totalProduct={totalProduct} />
+        :
+        null}
+
       <div className='product'>
         {
           cart.map(elem => {

@@ -15,6 +15,10 @@ const App = () => {
   const [title, setTitle] = useState('');
   const [cart, setCart] = useState(JSON.parse(localStorage.getItem("cart-product")) || []);
   const [open, setOpen] = useState(false)
+
+  const [checkOpen, setCheckOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     localStorage.setItem('cart-product', JSON.stringify(cart))
   }, [cart])
@@ -69,20 +73,30 @@ const App = () => {
     } : elem)
     setCart(newArr)
   }
-  const cartTotal = cart.reduce((acc, item) => acc + item.count * item.price, 0 )
-  const closeModal = () => {
-    localStorage.removeItem('cart-product')
-    setOpen(false)
-    setCart([])
-     setTimeout(() => {
-      alert('успешно прошло')
-    }, 2000)
+
+  const byProduct = () => {
+    setLoading(true)
+    setTimeout(() => {
+      setOpen(false)
+      setCheckOpen(true)
+      setLoading(false)
+    }, 3000)
   }
+
+  const closeCheckOpen = () => {
+    localStorage.removeItem('cart-product')
+    setCart([])
+    setCheckOpen(false)
+  }
+
+  const totalProduct = cart.reduce((acc, item) => acc + item.count * item.price, 0);
+  
   return (
     <div className='app'>
       <Header
         toggleDiscount={toggleDiscount}
         title={title} />
+
       <div className="container">
         <Search searchData={searchData} />
         <div className="wrapper">
@@ -103,10 +117,13 @@ const App = () => {
               <Route
                 path='/cart'
                 element={<Cart
-                  closeModal={closeModal}
+                  loading={loading}
+                  closeCheckOpen={closeCheckOpen}
+                  checkOpen={checkOpen}
+                  byProduct={byProduct}
                   open={open}
                   setOpen={setOpen}
-                  cartTotal={cartTotal}
+                  totalProduct={totalProduct}
                   plus={plus}
                   min={min}
                   deleteProduct={deleteProduct}

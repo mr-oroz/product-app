@@ -6,12 +6,17 @@ const ProductItem = (props) => {
     <div className='card'>
       {discount !== null ? <span>скидка {discount}% </span> : null}
       <h5>{title}</h5>
-      {count ? <span>{price * count}</span> : price}
+      {
+        count ?
+          <span>{price * count} сом</span>
+          :
+          <span>{price}</span>
+      }
       {
         count && <div>
           <button onClick={min}>-</button>
           <span>{count}</span>
-          <button onClick={plus}>+</button> 
+          <button onClick={plus}>+</button>
         </div>
       }
       <button onClick={props.onClick}>{buttonTitle}</button>
