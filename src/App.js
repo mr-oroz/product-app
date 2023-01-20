@@ -41,17 +41,6 @@ const App = () => {
     setData(newArr)
   }
 
-  const addToCart = (id) => {
-    const check = cart.every(elem => elem.id !== id)
-    if (!check) {
-      alert('продук добавлен!')
-    } else {
-      const product = data.find(elem => elem.id === id)
-      const newItem = { ...product, count: 1 }
-      const newArr = [...cart, newItem]
-      setCart(newArr)
-    }
-  }
 
   const deleteProduct = (id) => {
     const newArr = cart.filter(elem => elem.id !== id)
@@ -90,7 +79,7 @@ const App = () => {
   }
 
   const totalProduct = cart.reduce((acc, item) => acc + item.count * item.price, 0);
-  
+
   return (
     <div className='app'>
       <Header
@@ -111,9 +100,7 @@ const App = () => {
             <Routes>
               <Route
                 path='/'
-                element={<Product
-                  addToCart={addToCart}
-                  product={data} />} />
+                element={<Product />} />
               <Route
                 path='/cart'
                 element={<Cart
@@ -127,7 +114,7 @@ const App = () => {
                   plus={plus}
                   min={min}
                   deleteProduct={deleteProduct}
-                  cart={cart} />} />
+                  />} />
             </Routes>
           </div>
         </div>

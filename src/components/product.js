@@ -1,19 +1,20 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import List from './list';
 import ProductItem from './product-item';
-
-const Product = (props) => {
-  const { product, addToCart } = props;
+import { store } from '../context/store';
+const Product = () => {
+  const { data, addToCart } = useContext(store)
   return (
     <div className='product'>
-      {
-        product.map((elem) => {
-          return <ProductItem
-            buttonTitle={'купить'}
-            onClick={() => addToCart(elem.id)}
-            key={elem.id}
-            {...elem} />
-        })
-      }
+      <List
+        items={data}
+        renderItem={(elem) => <ProductItem
+          buttonTitle={'купить'}
+          onClick={() => addToCart(elem.id)}
+          key={elem.id}
+          {...elem}
+        />}
+      />
     </div>
   );
 };
